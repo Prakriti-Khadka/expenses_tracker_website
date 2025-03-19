@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Prakriti Khadka{% endblock title %}
+
+{% block body %}
+<div class="container">
+    <div class="profile-section">
+        <div class="profile-photo">
+            <img src="\static\images\myimg.jfif.jpg" alt="Prakriti Khadka's Photo" class="profile-img">
+        </div>
+
+        <div class="profile-details">
+            <h1>Prakriti Khadka</h1>
+            <h2>Education</h2>
+            <p>BSc(Hons) Computer Science - Herald College Kathmandu</p>
+            <p>Year: 2024 - 2026</p> 
+            <h2>Skills</h2>
+            <p class="skills">
+                HTML, CSS, JavaScript, Python,Django,DSA, Java, Express.js, Node.js, MySQL, Node.js
+            </p>
+
+            <h2>Connect with me on</h2>
+            <div class="social-links">
+                <a href="www.linkedin.com/in/prakriti-khadka-1578922a8" target="_blank">
+                    LinkedIn
+                </a>
+                <a href="" target="_blank">
+                    Instagram
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .profile-section {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .profile-photo {
+        width: 40%;
+    }
+
+    .profile-img {
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    .profile-details {
+        width: 55%;
+        padding-left: 20px;
+    }
+
+    .profile-details h1 {
+        font-size: 36px;
+        margin-bottom: 10px;
+    }
+
+    .profile-details p {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .profile-details h2 {
+        font-size: 24px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        color: green;
+        font-weight: bold;
+    }
+
+    .skills {
+        font-size: 18px;
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+
+    .social-links {
+        margin-top: 20px;
+    }
+
+    .social-links a {
+        display: inline-flex;
+        align-items: center;
+        margin-right: 15px;
+        text-decoration: none;
+        color: #000;
+        font-size: 18px;
+    }
+
+    .social-icon {
+        width: 24px;
+        height: 24px;
+        margin-right: 8px;
+    }
+</style>
+{% endblock body %}
+
+
+
+
+
+
+
+
+
+
+
+
+
