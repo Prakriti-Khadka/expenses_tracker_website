@@ -15,7 +15,9 @@
             height: 100vh;
             margin: 0;
         }
-
+        h3{
+            color: #2e7d32;
+        }
         .navbar {
             background-color: #2e7d32; /* Dark green */
             padding: 10px 20px;
@@ -130,7 +132,7 @@
     </nav>
 
     <div class="register-container">
-        <h2>Create an Account</h2>
+        <h3>Create an Account</h3>
         {% if messages %}
             {% for message in messages %}
                 <div class="alert alert-{{ message.tags }}">

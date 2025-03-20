@@ -1,62 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expenses Tracker</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body> -->
-    <!-- Navbar -->
-    <!-- <nav class="navbar">
-        <div class="navbar-container">
-            <a href="/" class="navbar-brand">Expenses Tracker</a>
-
-
-            <a href="{% url 'admin_login' %}" class="navbar-link">Admin Dashboard</a> 
-            <a href="{% url 'user_logout' %}" class="navbar-link">Logout</a>    
-        </div>
-    </nav> -->
-
-    <!-- Main Content -->
-    <!-- <div class="container">
-        <h1>Welcome to Expenses Tracker</h1>
-        <p class="description">Manage your personal or group expenses easily and effectively!</p>
-        <br>
-        <div class="choice-container">
-            <button class="choice-btn" id="personal-btn">Personal Expenses</button>
-            <button class="choice-btn" id="group-btn">Group Expenses</button>
-        </div> -->
-
-        <!-- Expense Form -->
-        <!-- <form id="expense-form" class="expense-form" method="POST">
-            {% csrf_token %}
-            <input type="text" id="name" placeholder="Expense Name" required>
-            <input type="number" id="amount" placeholder="Amount" required>
-            <input type="date" id="date" required>
-            <input type="text" id="category" placeholder="Category" required> -->
-
-            <!-- Group Expenses Input -->
-            <!-- <div id="group-input" class="group-input" style="display:none;">
-                <input type="text" id="members" placeholder="Group Members (comma separated)">
-            </div>
-
-            <button type="submit">Add Expense</button>
-        </form>
-    </div> 
-    <footer class="footer">
-        <div class="footer-container">
-            <p>&copy; 2025 Group C. All Rights Reserved.</p>
-        </div>
-    </footer>
-
-    <script src="{% static 'js/script.js' %}"></script>
-</body>
-</html>  -->
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -72,7 +13,7 @@
         body {
             background-color: #e8f5e9;
             font-family: Arial, sans-serif;
-            padding-top: 90px; /* Adjust to avoid navbar overlap */
+            padding-top: 90px; 
         }
     
         /* Navbar Styles */
@@ -143,7 +84,7 @@
     
         .sidebar .nav-link:hover,
         .sidebar .nav-link.active {
-            background: #007bff;
+            background-color:#2e7d32;
             color: white;
         }
     
@@ -173,6 +114,17 @@
             width: 100%;
         }
     
+        .btn-primary {
+            background-color: #388e3c;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background-color:#2e7d32;
+        }
         /* Footer Styles */
         footer {
             position: fixed;
@@ -233,6 +185,7 @@
             <!-- Personal Expenses Section -->
             <section id="personal" class="content-section">
                 <h2>Personal Expenses</h2>
+                <p id="msg"></p>
                 <form class="expense-form">
                     <input type="text" class="form-control" placeholder="Expense Name" required>
                     <input type="number" class="form-control" placeholder="Amount" required>
@@ -293,9 +246,87 @@
             // Show the personal section
             showSection('welcome'); 
         });
-    </script>
+
+
+    document.querySelector("#personal form").addEventListener("submit", function(event) {
+    event.preventDefault(); 
+
+    // Collect the form data
+    const nameInput = document.querySelector("#personal input[placeholder='Expense Name']");
+    const amountInput = document.querySelector("#personal input[placeholder='Amount']");
+    const dateInput = document.querySelector("#personal input[type='date']");
+    const categoryInput = document.querySelector("#personal input[placeholder='Category']");
+
+    // Now we extract the values of the input fields
+    const name = nameInput.value;
+    const amount = amountInput.value;
+    const date = dateInput.value;
+    const category = categoryInput.value;
+
+    // Prepare the data to send to the server
+    const expenseData = {
+        name: name,
+        amount: parseFloat(amount), // Convert amount to a float
+        date: date,
+        category: category,
+    };
+
+    // Clear the input fields immediately
+    nameInput.value = '';
+    amountInput.value = '';
+    dateInput.value = '';
+    categoryInput.value = '';
+
+    // Get the message container element
+    const msgElement = document.getElementById('msg');
+    msgElement.textContent = 'Adding expense...';
+    msgElement.style.color = 'blue';
+
+    // Send the data using the Fetch API
+    fetch('/add_personal_expense/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken') // CSRF token for security
+        },
+        body: JSON.stringify(expenseData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Display success or error message
+        if (data.success) {
+            msgElement.textContent = 'Added successfully!';
+            msgElement.style.color = 'green'; // Success message in green
+        } else {
+            msgElement.textContent = 'Error: ' + data.message;
+            msgElement.style.color = 'red'; // Error message in red
+        }
+    })
+    .catch(error => {
+        msgElement.textContent = 'An error occurred while adding the expense.';
+        msgElement.style.color = 'red'; // Error message in red
+        console.error(error);
+    });
+});
+
+// Function to get the CSRF token from cookies
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
     
-    <!-- Footer -->
+<!-- Footer -->
     <footer class="footer">
         <div class="footer-container">
             <p>&copy; 2025 Group C. All Rights Reserved.</p>

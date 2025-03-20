@@ -59,6 +59,7 @@ TEMPLATES = [
         # 'APP_DIRS': True, 
 
         'DIRS': [BASE_DIR / 'templates'],
+        # 'DIRS': [BASE_DIR / 'myapp/templates'], 
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -146,20 +147,5 @@ STATICFILES_DIRS = [
 ]
 
 LOGOUT_REDIRECT_URL = '/'
-
-
-# Make sure your static files are in the right location
-# STATICFILES_DIRS = [
-#     BASE_DIR / 'myapp/static', 
-#     BASE_DIR / 'myapp/templates', # Make sure the static files are inside 'myapp/static/'
-# ]
-
-# STATICFILES_DIRS = [
-#     BASE_DIR / 'myapp' / 'static',  # static directory
-#     BASE_DIR / 'myapp' / 'templates',  # templates directory
-# ]
-
-
-
 LOGIN_REDIRECT_URL = 'admin_dashboard'  # Redirect to admin dashboard after login
 LOGOUT_REDIRECT_URL = 'index'  # Redirect to homepage after logout
