@@ -6,19 +6,15 @@ from django.contrib.auth import logout
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-
-# eXTRA
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
 
 def custom_logout(request):
     logout(request)
-    return redirect('index')
-    # return redirect('login')
-
-
-# def index(request):
-#     return render(request, 'index.html')
-
+    # return redirect('index')
+    return redirect('login')
 
 # Function to check if user is a superuser
 def is_superuser(user):
@@ -101,8 +97,6 @@ def admin_expense_delete(request, expense_id, is_group):
     expense.delete()
     return redirect('admin_dashboard')
 
-
-
 @csrf_exempt  # Allow this view to be called from a non-CSRF-safe environment like JavaScript
 def add_expense(request):
     if request.method == "POST":
@@ -149,20 +143,6 @@ def add_expense(request):
             return JsonResponse({'success': False, 'message': 'Error adding expense. Please try again.'})
 
     return JsonResponse({'success': False, 'message': 'Invalid request method.'})
-
-
-
-
-# extra
-
-from django.contrib.auth import logout
-from django.shortcuts import redirect
-
-from django.contrib.auth.models import User
-from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
-
 
 def user_logout(request):
     logout(request)
