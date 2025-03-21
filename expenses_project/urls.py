@@ -31,20 +31,17 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path('admin-login/', views.admin_login, name='admin_login'),
-    path('login/', auth_views.LoginView.as_view(), name='login'),  # Login URL
+    path('login/', auth_views.LoginView.as_view(), name='login'), 
    path('admin-expense/edit/<int:expense_id>/<str:is_group>/', views.admin_expense_edit, name='admin_expense_edit'),
    path('admin-expense/delete/<int:expense_id>/<str:is_group>/', views.admin_expense_delete, name='admin_expense_delete'),
-    # path('add-expense/', views.add_expense, name='add_expense'),
     path('', views.user_login, name='login'),
     path('register/', views.register, name='register'),
     path('index/', views.index, name='index'), 
     path('admin-logout/', views.custom_logout, name='admin_logout'),
     path('user-logout/', views.user_logout, name='user_logout'),
-     path('admin-user/edit/<int:user_id>/', views.admin_user_edit, name='admin_user_edit'),
-     path('admin-user/delete/<int:user_id>/', views.admin_user_delete, name='admin_user_delete'),
-
+    path('admin-user/edit/<int:user_id>/', views.admin_user_edit, name='admin_user_edit'),
+    path('admin-user/delete/<int:user_id>/', views.admin_user_delete, name='admin_user_delete'),
     path('add_personal_expense/', views.add_personal_expense, name='add_personal_expense'),
-
 ]
 
 

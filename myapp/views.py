@@ -27,8 +27,6 @@ def admin_dashboard(request):
     personal_expenses = IndividualExpense.objects.all()
     group_expenses = GroupExpense.objects.all()
     users = User.objects.all()
-
-
     context = {
         'personal_expenses': personal_expenses,
         'group_expenses': group_expenses,
@@ -100,57 +98,6 @@ def admin_expense_delete(request, expense_id, is_group):
     expense.delete()
     return redirect('admin_dashboard')
 
-# @csrf_exempt  # Allow this view to be called from a non-CSRF-safe environment like JavaScript
-# def add_expense(request):
-#     if request.method == "POST":
-#         try:
-#             # Parse incoming JSON data
-#             data = json.loads(request.body)
-
-#             # Extract fields from the incoming data
-#             name = data.get('name')
-#             amount = data.get('amount')
-#             date = data.get('date')
-#             category = data.get('category')
-#             is_group = data.get('is_group')
-#             members = data.get('members') if is_group else None
-
-#     #         # Create the expense based on whether it's an individual or group
-#             if is_group:
-#                 expense = GroupExpense.objects.create(
-#                     name=name,
-#                     amount=amount,
-#                     date=date,
-#                     category=category,
-#                     is_group=is_group,
-#                     member1=members[0] if len(members) > 0 else None,
-#                     member2=members[1] if len(members) > 1 else None,
-#                     member3=members[2] if len(members) > 2 else None,
-#                     member4=members[3] if len(members) > 3 else None,
-#                     member5=members[4] if len(members) > 4 else None,
-#                 )
-#             else:
-#                 expense = IndividualExpense.objects.create(
-#                     name=name,
-#                     amount=amount,
-#                     date=date,
-#                     category=category,
-#                 )
-
-#             # Return a successful response
-#             return JsonResponse({'success': True, 'message': 'Expense added successfully!'})
-
-#         except Exception as e:
-#             # Log the error and return an error response
-#             print(f"Error: {e}")
-#             return JsonResponse({'success': False, 'message': 'Error adding expense. Please try again.'})
-
-#     return JsonResponse({'success': False, 'message': 'Invalid request method.'})
-
-import json
-from django.http import JsonResponse
-from .models import IndividualExpense
-
 def add_personal_expense(request):
     if request.method == "POST":
         try:
@@ -181,9 +128,6 @@ def add_personal_expense(request):
 
     return JsonResponse({'success': False, 'message': 'Invalid request method.'})
 
-
-
-
 def user_logout(request):
     logout(request)
     return redirect('login')
@@ -198,8 +142,7 @@ def register(request):
         else:
             # Display form errors
             errors = form.errors.as_json()
-            print(errors)  # For debugging, you can remove this later
-            messages.error(request, 'Registration failed.')
+            messages.error(request, 'Registration failed.Please correct the errors below.', extra_tags='danger')
     else:
         form = UserCreationForm()
     
@@ -218,8 +161,6 @@ def user_login(request):
             messages.error(request, 'This account is not registered.')
             return redirect('login')
     return render(request, 'login.html')
-
-    # return render(request, 'index.html')
 
 def index(request):
     return render(request, 'index.html')
@@ -240,3 +181,5 @@ def admin_user_delete(request, user_id):
     user.delete()
     messages.success(request, "User deleted successfully.")
     return redirect('admin_dashboard')
+
+
