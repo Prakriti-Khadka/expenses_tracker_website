@@ -11,7 +11,6 @@
             background-color: #e8f5e9;
             font-family: Arial, sans-serif;
         }
-
         .navbar-custom {
             background-color: #2e7d32;
             color: white;
@@ -105,7 +104,46 @@
             text-align: center;
             padding: 10px 0;
         }
-    </style>
+
+
+        body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto; /* Allow vertical scrolling */
+}
+
+.container {
+    padding-top: 80px;
+    padding-bottom: 60px; /* Add space for footer */
+    min-height: 100vh; /* Ensure full height */
+    overflow-y: auto;
+}
+
+.table-container {
+    max-height: 400px; /* Scrollable table */
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+/* Fix navbar on top */
+.navbar-custom {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+/* Allow footer to move naturally */
+footer {
+    width: 100%;
+    background-color: #2e7d32;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: relative; /* Change from fixed to relative */
+}
+</style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
@@ -182,6 +220,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Username</th>
+                        <th>Email</th>
                         <th>Join Date</th>
                         <th>Actions</th>
                     </tr>
@@ -191,10 +230,11 @@
                         <tr>
                             <td>{{ user.id }}</td>
                             <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
                             <td>{{ user.date_joined|date:"Y-m-d" }}</td>
                             <td>
-                                <a href="{% url 'admin_user_edit' user.id %}">Edit</a> |
-                                <a href="{% url 'admin_user_delete' user.id %}">Delete</a>
+                                <!-- <a href="{% url 'admin_user_edit' user.id %}">Edit</a> | -->
+                                 <a href="{% url 'admin_user_delete' user.id %}">Delete</a>
                             </td>
                         </tr>
                     {% empty %}
@@ -214,3 +254,6 @@
     <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>
+
+
+

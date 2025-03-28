@@ -132,20 +132,19 @@ def user_logout(request):
     logout(request)
     return redirect('login')
 
+from .forms import UserRegisterForm 
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = UserRegisterForm(request.POST)
         if form.is_valid():
-            form.save()
+            form.save()  # ✅ This will now correctly save the email
             messages.success(request, 'Account created successfully! You can now log in.')
             return redirect('login')
         else:
-            # Display form errors
-            errors = form.errors.as_json()
-            messages.error(request, 'Registration failed.Please correct the errors below.', extra_tags='danger')
+            messages.error(request, 'Registration failed. Please correct the errors below.', extra_tags='danger')
     else:
-        form = UserCreationForm()
-    
+        form = UserRegisterForm()
+
     return render(request, 'register.html', {'form': form})
 
 def user_login(request):
@@ -183,3 +182,118 @@ def admin_user_delete(request, user_id):
     return redirect('admin_dashboard')
 
 
+from django.shortcuts import render
+from .models import IndividualExpense
+from django.http import JsonResponse
+
+def expense_summary(request):
+    # Get the name and year from request (via GET parameters)
+    user_name = request.GET.get('user_name')
+    year = request.GET.get('year')
+   
+    # Convert year to integer (if provided)
+    try:
+        year = int(year)
+    except (ValueError, TypeError):
+        return JsonResponse({'error': 'Invalid year'}, status=400)
+
+    # Querying individual expenses filtered by name and year
+    expenses = IndividualExpense.objects.filter(name=user_name, date__year=year)
+
+    # Create a dictionary to store the expense data for each category
+    chart_data = {}
+    for expense in expenses:
+        if expense.category not in chart_data:
+            chart_data[expense.category] = 0
+        chart_data[expense.category] += float(expense.amount)
+
+    # Return the chart data in a format that can be used by Chart.js
+    return JsonResponse({'chart_data': chart_data})
+
+
+
+# import json
+# from django.http import JsonResponse
+# from django.shortcuts import get_object_or_404
+from .models import GroupExpense, Member
+
+# def add_group_expense(request):
+#     if request.method == "POST":
+#         try:
+#             # Check if request contains JSON data
+#             if request.content_type == "application/json":
+#                 data = json.loads(request.body)
+#             else:
+#                 data = request.POST  # Handle form-encoded data
+
+#             # Extract fields
+#             name = data.get('name')
+#             amount = data.get('amount')
+#             date = data.get('date')
+#             category = data.get('category')
+#             member_names = data.get('members')  
+
+#             if isinstance(member_names, str):  # Convert CSV string to list
+#                 member_names = [m.strip() for m in member_names.split(",")]
+
+#             # Create GroupExpense entry
+#             expense = GroupExpense.objects.create(
+#                 name=name,
+#                 amount=amount,
+#                 date=date,
+#                 category=category
+#             )
+
+#             # Add members to the expense
+#             for member_name in member_names:
+#                 member, created = Member.objects.get_or_create(name=member_name)
+#                 expense.members.add(member)
+
+#             return JsonResponse({'success': True, 'message': 'Group expense added successfully!'})
+
+#         except Exception as e:
+#             print(f"Error: {e}")
+#             return JsonResponse({'success': False, 'message': 'Error adding group expense. Please try again.'})
+
+#     return JsonResponse({'success': False, 'message': 'Invalid request method.'})
+
+
+def add_group_expense(request):
+    if request.method == "POST":
+        try:
+            if request.content_type == "application/json":
+                data = json.loads(request.body)
+            else:
+                data = request.POST
+
+            # Extract fields
+            name = data.get('name')
+            amount = data.get('amount')
+            date = data.get('date')
+            category = data.get('category')
+            member_names = data.get('members')
+
+            if isinstance(member_names, str):  
+                member_names = [m.strip() for m in member_names.split(",")]
+
+            # Create GroupExpense entry
+            expense = GroupExpense.objects.create(
+                name=name,
+                amount=amount,
+                date=date,
+                category=category
+            )
+
+            # Add members to the expense
+            for member_name in member_names:
+                if member_name:  # Ensure it's not empty
+                    member, created = Member.objects.get_or_create(name=member_name)
+                    expense.members.add(member)  # Link member to expense
+
+            return JsonResponse({'success': True, 'message': 'Group expense added successfully!'})
+
+        except Exception as e:
+            print(f"Error: {e}")
+            return JsonResponse({'success': False, 'message': 'Error adding group expense. Please try again.'})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method.'})

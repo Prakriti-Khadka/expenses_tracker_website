@@ -42,6 +42,14 @@ urlpatterns = [
     path('admin-user/edit/<int:user_id>/', views.admin_user_edit, name='admin_user_edit'),
     path('admin-user/delete/<int:user_id>/', views.admin_user_delete, name='admin_user_delete'),
     path('add_personal_expense/', views.add_personal_expense, name='add_personal_expense'),
+
+
+       path('summary/', views.expense_summary, name='expense_summary'),
+
+      path('add-group-expense/', views.add_group_expense, name='add_group_expense'),
+
+
+
 ]
 
 
