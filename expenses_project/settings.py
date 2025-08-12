@@ -150,3 +150,6 @@ STATICFILES_DIRS = [
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = 'admin_dashboard'  # Redirect to admin dashboard after login
 LOGOUT_REDIRECT_URL = 'index'  # Redirect to homepage after logout
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
